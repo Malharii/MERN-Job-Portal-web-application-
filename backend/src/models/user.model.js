@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema(
       required: true,
     },
     profile: {
-      profileSummary: {
+      bio: {
         type: String,
       },
       skills: [{ type: String }],
