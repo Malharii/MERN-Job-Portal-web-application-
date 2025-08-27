@@ -70,3 +70,30 @@ export const getCompanyById = async (req, res) => {
     console.log(error);
   }
 };
+
+export const updateCompany = async (req, res) => {
+  try {
+    const { name, description, website, location } = req.body;
+
+    const file = req.file;
+
+    const updateData = { name, description, website, location };
+
+    const company = await Company.findByIdAndUpdate(req.params.id, updateData, {
+      new: true,
+    });
+
+    if (!company) {
+      return res.status(404).json({
+        message: "Company not found.",
+        success: false,
+      });
+    }
+    return res.status(200).json({
+      message: "Company information updated.",
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
