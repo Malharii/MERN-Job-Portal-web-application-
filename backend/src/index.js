@@ -20,12 +20,12 @@ const corsOptions = () => {
   credential: true;
 };
 
-connectDB();
-
-app.use(cors(corsOptions));
+app.use(cors());
 
 app.use("/api/v1/user", userRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is runing on ${PORT}`);
+
+  connectDB();
 });

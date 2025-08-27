@@ -1,6 +1,8 @@
 import { User } from "../models/user.model.js";
-import bcrpyt from "bcrpytjs";
+import bcrypt from "bcryptjs";
+
 import jwt from "jsonwebtoken";
+
 // this fun is for the creating the user or register
 export const register = async (req, res) => {
   try {
@@ -21,7 +23,7 @@ export const register = async (req, res) => {
       });
     }
     // hashing the password using the bcrpyt
-    const hashedPassword = await bcrpyt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);
     await User.create({
       fullName,
       email,
@@ -60,7 +62,7 @@ export const login = async (req, res) => {
     }
 
     // Compare the entered password with the hashed password stored in DB
-    const isPasswordMatch = await bcrpyt.compare(password, user.password);
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
     if (!isPasswordMatch) {
       return res.status(400).json({
         message: "Incorrect email or password.",
@@ -121,13 +123,6 @@ export const updateProfile = async (req, res) => {
   try {
     const { fullName, email, phoneNumber, bio, skills } = req.body;
 
-    if (!fullName || !email || !phoneNumber || !bio || !skills) {
-      return res.status(400).json({
-        message: "Something is missing",
-        success: false,
-      });
-    }
-
     const file = req.file;
 
     let skillsArray;
@@ -147,11 +142,12 @@ export const updateProfile = async (req, res) => {
     }
 
     // updateing the data
-    user.fullName = fullName;
-    user.email = email;
-    user.phoneNumber = phoneNumber;
-    user.profile.bio = bio;
-    user.profile.skills = skillsArray;
+    // updating data
+    if (fullName) user.fullName = fullName;
+    if (email) user.email = email;
+    if (phoneNumber) user.phoneNumber = phoneNumber;
+    if (bio) user.profile.bio = bio;
+    if (skills) user.profile.skills = skillsArray;
 
     await user.save();
 
