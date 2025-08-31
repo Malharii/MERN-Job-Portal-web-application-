@@ -8,6 +8,7 @@ import { PORT } from "./config/serverConfig.js";
 import userRouter from "./Routes/user.route.js";
 import companyRoute from "./Routes/company.route.js";
 import JobRoute from "./Routes/job.route.js";
+import applicationRoute from "./Routes/application.route.js";
 
 dotenv.config();
 
@@ -29,6 +30,7 @@ app.use(cors());
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/company", companyRoute);
 app.use("/api/v1/job", JobRoute);
+app.use("/api/v1/application", applicationRoute);
 
 app.listen(PORT, () => {
   console.log(`Server is runing on ${PORT}`);
